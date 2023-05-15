@@ -1,0 +1,16 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Theme.LabProject2" parent="Theme.AppCompat.Light.NoActionBar">
+<!--        Theme.MaterialComponents.DayNight.DarkActionBar-->
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/background</item>
+        <item name="colorOnPrimary">@color/headline</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/secondary</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor">?attr/colorPrimary</item>
+        <item name="android:navigationBarColor">?attr/colorOnPrimary</item>
+        <!-- Customize your theme here. -->
+    </style>
+
+</resources>

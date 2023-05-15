@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="SwitchTheme" parent="Theme.AppCompat">
+        <item name="colorControlActivated">@color/button</item>
+        <item name="colorControlNormal">@color/gray</item>
+    </style>
+</resources>

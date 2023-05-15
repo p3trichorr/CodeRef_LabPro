@@ -1,0 +1,46 @@
+<resources>
+    <string name="app_name">Debt Tracker</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="menu_main">Main</string>
+    <string name="menu_my_debts">My Debts</string>
+    <string name="menu_someone_owes_me">People Indebted to Me</string>
+
+    <string name="action_add">Add Debt</string>
+    <string name="action_details">Debt Details</string>
+    <string name="until_date">Until %1$s</string>
+
+    <string name="debtor_switch">I am the debtor</string>
+    <string name="name_hint">Name</string>
+    <string name="amount_hint">Amount</string>
+    <string name="return_until">Return Until: %1$s</string>
+    <string name="date_def">Return Until: [Date not Picked]</string>
+
+    <string-array name="spinner_value">
+        <item>RUB</item>
+        <item>USD</item>
+        <item>EUR</item>
+        <item>IDR</item>
+    </string-array>
+
+    <string name="add_button">Add</string>
+    <string name="save_button">Save</string>
+    <string name="update_button">Update</string>
+    <string name="delete_button">Delete</string>
+
+    <string name="add_toast">Debt added successfully!</string>
+    <string name="update_toast">Debt updated successfully!</string>
+    <string name="delete_toast">Debt deleted successfully!</string>
+
+    <string name="delete_popup">Are you sure you want to delete debt?</string>
+
+    <string name="due_today">Due %1$s</string>
+    <string name="past_due">%1$s days past due </string>
+    <string name="date_unpicked">Due date not set</string>
+
+    <string name="name_mt">Name field is required</string>
+    <string name="amount_mt">Amount field is required</string>
+</resources>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/nav_main">
+
+    <fragment
+        android:id="@+id/nav_main"
+        android:name="com.example.labproject2.ui.MainFragment"
+        android:label="@string/menu_main"
+        tools:layout="@layout/fragment_main" />
+
+    <fragment
+        android:id="@+id/nav_my_debts"
+        android:name="com.example.labproject2.ui.MyDebtsFragment"
+        android:label="@string/menu_my_debts"
+        tools:layout="@layout/fragment_my_debts" />
+
+    <fragment
+        android:id="@+id/nav_someone_owes_me"
+        android:name="com.example.labproject2.ui.SomeoneOwesMeFragment"
+        android:label="@string/menu_someone_owes_me"
+        tools:layout="@layout/fragment_someone_owes_me" />
+</navigation>
