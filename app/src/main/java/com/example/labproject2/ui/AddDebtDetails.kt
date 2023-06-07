@@ -4,7 +4,6 @@ import android.app.AlertDialog
 import android.app.DatePickerDialog
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.ArrayAdapter
@@ -26,8 +25,8 @@ class AddDebtDetails : AppCompatActivity(), DebtContract.View {
     private var aDateInteger: Int = 0
     private var btnState: Boolean = false
 
-    private var nameField: EditText? = null
-    private var amountField: EditText? = null
+    var nameField: EditText? = null
+    var amountField: EditText? = null
 
     private var isAllFieldsChecked = false
 
@@ -197,7 +196,7 @@ class AddDebtDetails : AppCompatActivity(), DebtContract.View {
         }
     }
 
-    private fun checkAllFields(): Boolean {
+    fun checkAllFields(): Boolean {
         if (nameField!!.length() == 0) {
             nameField!!.error = getString(R.string.name_mt)
             return false

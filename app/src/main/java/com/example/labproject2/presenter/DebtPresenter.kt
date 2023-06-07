@@ -1,5 +1,6 @@
 package com.example.labproject2.presenter
 
+
 class DebtPresenter(
     private val view: DebtContract.View,
     private val model: DebtContract.Model
