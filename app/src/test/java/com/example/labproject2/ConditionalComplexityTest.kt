@@ -3,66 +3,72 @@ package com.example.labproject2
 import com.example.labproject2.flaw.ConditionalComplexity
 import com.google.common.truth.Truth.assertThat
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.mockito.Mock
+import org.mockito.Mockito.*
+import org.mockito.junit.MockitoJUnitRunner
 
+@RunWith(MockitoJUnitRunner::class)
 class ConditionalComplexityTest {
+
+    @Mock
+    private lateinit var mockDependency: ConditionalComplexity.DebtFunCall
 
     @Test
     fun checkFields_notAllFilled_falseReturn() {
-        val result = ConditionalComplexity.isDebtSavedOrUpdated(
+
+        val conditionalComplexity = ConditionalComplexity(mockDependency)
+
+        val result = conditionalComplexity.isDebtSavedOrUpdated(
             false,
-            "Add",
-            false
+            "",
+            ""
         )
         assertThat(result).isFalse()
     }
 
     @Test
-    fun checkFields_allFilled_trueReturn() {
-        val result = ConditionalComplexity.isDebtSavedOrUpdated(
-            true,
-            "Add",
-            false
-        )
-        assertThat(result).isTrue()
-    }
+    fun checkFields_allFilledNoState_falseReturn() {
 
-    @Test
-    fun addDebts_idPassed_falseReturn() {
-        val result = ConditionalComplexity.isDebtSavedOrUpdated(
+        val conditionalComplexity = ConditionalComplexity(mockDependency)
+
+        val result = conditionalComplexity.isDebtSavedOrUpdated(
             true,
-            "Add",
-            true
+            "",
+            ""
         )
         assertThat(result).isFalse()
+        verify(mockDependency, times(0)).addData()
+        verify(mockDependency, times(0)).updateDebt()
     }
 
     @Test
-    fun addDebts_idNotPassed_trueReturn() {
-        val result = ConditionalComplexity.isDebtSavedOrUpdated(
+    fun callFunction_addCommandCallUpdateFunction_falseOutput() {
+
+        val conditionalComplexity = ConditionalComplexity(mockDependency)
+
+        val result = conditionalComplexity.isDebtSavedOrUpdated(
             true,
             "Add",
-            false
+            "Update"
         )
         assertThat(result).isTrue()
+        verify(mockDependency, times(0)).addData()
+        verify(mockDependency, times(1)).updateDebt()
     }
 
     @Test
-    fun updateDebts_idPassed_trueReturn() {
-        val result = ConditionalComplexity.isDebtSavedOrUpdated(
+    fun callFunction_addCommandFunctional_trueReturn() {
+
+        val conditionalComplexity = ConditionalComplexity(mockDependency)
+
+        val result = conditionalComplexity.isDebtSavedOrUpdated(
             true,
-            "Update",
-            true
+            "Add",
+            "Add"
         )
         assertThat(result).isTrue()
-    }
-
-    @Test
-    fun updateDebts_idNotPassed_falseReturn() {
-        val result = ConditionalComplexity.isDebtSavedOrUpdated(
-            true,
-            "Update",
-            false
-        )
-        assertThat(result).isFalse()
+        verify(mockDependency, times(1)).addData()
+        verify(mockDependency, times(0)).updateDebt()
     }
 }

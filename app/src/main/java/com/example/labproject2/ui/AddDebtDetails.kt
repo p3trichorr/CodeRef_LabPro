@@ -20,7 +20,7 @@ import java.util.*
 
 class AddDebtDetails : AppCompatActivity(), DebtContract.View {
 
-    private lateinit var binding: AddDebtDetailsBinding
+    lateinit var binding: AddDebtDetailsBinding
     private lateinit var dateString: String
     private var aDateInteger: Int = 0
     private var btnState: Boolean = false
@@ -28,7 +28,7 @@ class AddDebtDetails : AppCompatActivity(), DebtContract.View {
     var nameField: EditText? = null
     var amountField: EditText? = null
 
-    private var isAllFieldsChecked = false
+    var isAllFieldsChecked = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

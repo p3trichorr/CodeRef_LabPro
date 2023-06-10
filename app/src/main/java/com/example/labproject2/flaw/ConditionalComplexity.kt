@@ -1,46 +1,31 @@
 package com.example.labproject2.flaw
 
-import android.content.Context
-import android.util.Log
-import com.example.labproject2.data.DebtDatabase
-import com.example.labproject2.presenter.DebtModel
-import com.example.labproject2.presenter.DebtPresenter
-
-object ConditionalComplexity {
+class ConditionalComplexity(private val callFunction: DebtFunCall) {
 
     fun isDebtSavedOrUpdated(
         allFieldChecked: Boolean,
-        addOrUpdateState: String,
-        passDebtID: Boolean
+        buttonState: String,
+        buttonCommand: String
     ): Boolean {
-        val call = DebtData()
         if (!allFieldChecked) {
             return false
         }
-        if (addOrUpdateState == "Add") {
-            return if (passDebtID) {
-                false
-            } else {
-                call.addData()
-            }
-        } else if (addOrUpdateState == "Update") {
-            return if (passDebtID) {
-                call.updateDebt()
-            } else {
-                false
-            }
-        } else {
+        if (buttonState.isEmpty()) {
             return false
+        }
+        return if (buttonCommand == "Add") {
+            callFunction.addData()
+            true
+        } else if (buttonCommand == "Update") {
+            callFunction.updateDebt()
+            true
+        } else {
+            false
         }
     }
 
-    class DebtData {
-        fun addData(): Boolean {
-            return true
-        }
-
-        fun updateDebt(): Boolean {
-            return true
-        }
+    interface DebtFunCall {
+        fun addData()
+        fun updateDebt()
     }
 }
