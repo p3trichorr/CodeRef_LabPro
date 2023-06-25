@@ -1,5 +1,7 @@
 package com.example.labproject2.presenter
 
+import com.example.labproject2.data.Debts
+
 
 class DebtPresenter(
     private val view: DebtContract.View,
@@ -30,39 +32,16 @@ class DebtPresenter(
         }
     }
 
-    override fun addDebt(
-        name: String,
-        amount: String,
-        date: String,
-        currency: String,
-        isDebtor: Boolean,
-        dateInteger: Int
-    ) {
-        model.addDebt(name, amount, date, currency, isDebtor, dateInteger)
+    override fun addDebt(debts: Debts) {
+        model.addDebt(debts)
     }
 
-    override fun updateDebt(
-        id: Int,
-        name: String,
-        amount: String,
-        date: String,
-        currency: String,
-        isDebtor: Boolean,
-        dateInteger: Int
-    ) {
-        model.updateDebt(id, name, amount, date, currency, isDebtor, dateInteger)
+    override fun updateDebt(debts: Debts) {
+        model.updateDebt(debts)
     }
 
-    override fun deleteDebt(
-        id: Int,
-        name: String,
-        amount: String,
-        date: String,
-        currency: String,
-        isDebtor: Boolean,
-        dateInteger: Int
-    ) {
-        model.deleteDebt(id, name, amount, date, currency, isDebtor, dateInteger)
+    override fun deleteDebt(debts: Debts) {
+        model.deleteDebt(debts)
     }
 }
 

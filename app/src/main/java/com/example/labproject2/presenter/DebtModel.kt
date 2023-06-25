@@ -49,73 +49,23 @@ class DebtModel(private val debtDao: DebtsDAO) : DebtContract.Model {
     }
 
     @OptIn(DelicateCoroutinesApi::class)
-    override fun addDebt(
-        name: String,
-        amount: String,
-        date: String,
-        currency: String,
-        isDebtor: Boolean,
-        dateInteger: Int
-    ) {
+    override fun addDebt(debts: Debts) {
         GlobalScope.launch(Dispatchers.IO) {
-            val debt = Debts(
-                id = 0,
-                name = name,
-                amount = amount,
-                date = date,
-                currency = currency,
-                isDebtor = isDebtor,
-                dateInteger = dateInteger
-            )
-            debtDao.insertDebts(debt)
+            debtDao.insertDebts(debts)
         }
     }
 
     @OptIn(DelicateCoroutinesApi::class)
-    override fun updateDebt(
-        id: Int,
-        name: String,
-        amount: String,
-        date: String,
-        currency: String,
-        isDebtor: Boolean,
-        dateInteger: Int
-    ) {
+    override fun updateDebt(debts: Debts) {
         GlobalScope.launch(Dispatchers.IO) {
-            val debt = Debts(
-                id = id,
-                name = name,
-                amount = amount,
-                date = date,
-                currency = currency,
-                isDebtor = isDebtor,
-                dateInteger = dateInteger
-            )
-            debtDao.updateDebts(debt)
+            debtDao.updateDebts(debts)
         }
     }
 
     @OptIn(DelicateCoroutinesApi::class)
-    override fun deleteDebt(
-        id: Int,
-        name: String,
-        amount: String,
-        date: String,
-        currency: String,
-        isDebtor: Boolean,
-        dateInteger: Int
-    ) {
+    override fun deleteDebt(debts: Debts) {
         GlobalScope.launch(Dispatchers.IO) {
-            val debt = Debts(
-                id = id,
-                name = name,
-                amount = amount,
-                date = date,
-                currency = currency,
-                isDebtor = isDebtor,
-                dateInteger = dateInteger
-            )
-            debtDao.deleteDebts(debt)
+            debtDao.deleteDebts(debts)
         }
     }
 }

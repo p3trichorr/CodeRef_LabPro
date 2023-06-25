@@ -1,4 +1,3 @@
-import android.content.Context
 import com.example.labproject2.data.Debts
 
 interface DebtContract {
@@ -14,34 +13,11 @@ interface DebtContract {
         fun getDebtsDueToday()
         fun getDebtsOwedToUs()
         fun getDebtsWeOwe()
-        fun addDebt(
-            name: String,
-            amount: String,
-            date: String,
-            currency: String,
-            isDebtor: Boolean,
-            dateInteger: Int
-        )
+        fun addDebt(debts: Debts)
 
-        fun updateDebt(
-            id: Int,
-            name: String,
-            amount: String,
-            date: String,
-            currency: String,
-            isDebtor: Boolean,
-            dateInteger: Int
-        )
+        fun updateDebt(debts: Debts)
 
-        fun deleteDebt(
-            id: Int,
-            name: String,
-            amount: String,
-            date: String,
-            currency: String,
-            isDebtor: Boolean,
-            dateInteger: Int
-        )
+        fun deleteDebt(debts: Debts)
     }
 
     interface Model {
@@ -49,33 +25,10 @@ interface DebtContract {
         fun getDebtsDueToday(callback: (List<Debts>) -> Unit)
         fun getDebtsOwedToUs(callback: (List<Debts>) -> Unit)
         fun getDebtsWeOwe(callback: (List<Debts>) -> Unit)
-        fun addDebt(
-            name: String,
-            amount: String,
-            date: String,
-            currency: String,
-            isDebtor: Boolean,
-            dateInteger: Int
-        )
+        fun addDebt(debts: Debts)
 
-        fun updateDebt(
-            id: Int,
-            name: String,
-            amount: String,
-            date: String,
-            currency: String,
-            isDebtor: Boolean,
-            dateInteger: Int
-        )
+        fun updateDebt(debts: Debts)
 
-        fun deleteDebt(
-            id: Int,
-            name: String,
-            amount: String,
-            date: String,
-            currency: String,
-            isDebtor: Boolean,
-            dateInteger: Int
-        )
+        fun deleteDebt(debts: Debts)
     }
 }

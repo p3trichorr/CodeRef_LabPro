@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.app.DatePickerDialog
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.ArrayAdapter
@@ -103,38 +104,26 @@ class AddDebtDetails : AppCompatActivity(), DebtContract.View {
         }
 
         binding.saveBtn.setOnClickListener {
-            val debtorName = binding.addCreditorName.text.toString()
-            val debtAmount = binding.debtSum.text.toString()
-            val debtCurrency = binding.currencySpinner.selectedItem.toString()
-            var debtDate = dateString
-            val isDebtor = btnState
-            val dateInteger = aDateInteger
+            val debtDate = fillDate(dateString)
+            val debts = Debts(
+                id = 0,
+                binding.addCreditorName.text.toString(),
+                binding.debtSum.text.toString(),
+                debtDate,
+                binding.currencySpinner.selectedItem.toString(),
+                btnState,
+                aDateInteger,
+            )
             isAllFieldsChecked = checkAllFields()
-            debtDate = fillDate(debtDate)
             if (isAllFieldsChecked) {
                 when (intent.getStringExtra(PassedData.ADD_SAVE)) {
                     "add" -> {
-                        presenter.addDebt(
-                            debtorName,
-                            debtAmount,
-                            debtDate,
-                            debtCurrency,
-                            isDebtor,
-                            dateInteger
-                        )
+                        presenter.addDebt(debts)
                         Toast.makeText(this, getString(R.string.update_toast), Toast.LENGTH_SHORT).show()
                     }
                     "save" -> {
-                        val debtId = intent.getIntExtra(PassedData.ID_INFO, 0)
-                        presenter.updateDebt(
-                            debtId,
-                            debtorName,
-                            debtAmount,
-                            debtDate,
-                            debtCurrency,
-                            isDebtor,
-                            dateInteger
-                        )
+                        debts.id = intent.getIntExtra(PassedData.ID_INFO, 0)
+                        presenter.updateDebt(debts)
                         Toast.makeText(this, getString(R.string.update_toast), Toast.LENGTH_SHORT)
                             .show()
                     }
@@ -148,22 +137,16 @@ class AddDebtDetails : AppCompatActivity(), DebtContract.View {
             builder.setMessage(getString(R.string.delete_popup))
                 .setCancelable(false)
                 .setPositiveButton("Yes") { _, _ ->
-                    val debtorName = binding.addCreditorName.text.toString()
-                    val debtAmount = binding.debtSum.text.toString()
-                    val debtCurrency = binding.currencySpinner.selectedItem.toString()
-                    val debtDate = dateString
-                    val isDebtor = btnState
-                    val dateInteger = aDateInteger
-                    val debtId = intent.getIntExtra(PassedData.ID_INFO, 0)
-                    presenter.deleteDebt(
-                        debtId,
-                        debtorName,
-                        debtAmount,
-                        debtDate,
-                        debtCurrency,
-                        isDebtor,
-                        dateInteger
+                    val debts = Debts(
+                        intent.getIntExtra(PassedData.ID_INFO, 0),
+                        binding.addCreditorName.text.toString(),
+                        binding.debtSum.text.toString(),
+                        dateString,
+                        binding.currencySpinner.selectedItem.toString(),
+                        btnState,
+                        aDateInteger,
                     )
+                    presenter.deleteDebt(debts)
                     Toast.makeText(this, getString(R.string.delete_toast), Toast.LENGTH_SHORT).show()
                     finish()
                 }
