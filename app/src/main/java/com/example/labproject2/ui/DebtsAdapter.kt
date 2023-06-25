@@ -12,7 +12,7 @@ import com.example.labproject2.R
 import com.example.labproject2.data.Debts
 import com.example.labproject2.data.PassedData
 import com.example.labproject2.databinding.RecyclerItemBinding
-import java.text.SimpleDateFormat
+import com.example.labproject2.getTodayDate
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
 import java.util.*
@@ -93,8 +93,7 @@ class DebtsAdapter(
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun getDatePassed(debtDate: String): Int {
-        val dateFormat = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
-        val dateString = dateFormat.format(Date())
+        val dateString = getTodayDate()
         val dateSplit = dateString.split("-")
         val debtDateSplit = debtDate.split("-")
         val startDate = LocalDate.of(
@@ -115,8 +114,7 @@ class DebtsAdapter(
     companion object {
         val TodayDateInt: Int = getTodayDateInteger()
         private fun getTodayDateInteger(): Int {
-            val dateFormat = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
-            val dateString = dateFormat.format(Date())
+            val dateString = getTodayDate()
             val dateSplit = dateString.split("-")
             val dayInt = Integer.parseInt(dateSplit[0])
             val monthInt = Integer.parseInt(dateSplit[1])

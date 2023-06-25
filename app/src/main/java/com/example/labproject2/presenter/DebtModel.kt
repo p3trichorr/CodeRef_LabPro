@@ -1,11 +1,9 @@
 package com.example.labproject2.presenter
 
-import android.provider.Settings.Global.getString
-import com.example.labproject2.R
 import com.example.labproject2.data.Debts
 import com.example.labproject2.data.DebtsDAO
+import com.example.labproject2.getTodayDate
 import kotlinx.coroutines.*
-import java.text.SimpleDateFormat
 import java.util.*
 
 class DebtModel(private val debtDao: DebtsDAO) : DebtContract.Model {
@@ -119,11 +117,6 @@ class DebtModel(private val debtDao: DebtsDAO) : DebtContract.Model {
             )
             debtDao.deleteDebts(debt)
         }
-    }
-
-    private fun getTodayDate(): String {
-        val dateFormat = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
-        return dateFormat.format(Date())
     }
 }
 
