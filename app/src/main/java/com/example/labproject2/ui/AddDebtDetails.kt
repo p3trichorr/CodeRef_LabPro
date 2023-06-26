@@ -21,15 +21,11 @@ import java.util.*
 
 class AddDebtDetails : AppCompatActivity(), DebtContract.View {
 
-    lateinit var binding: AddDebtDetailsBinding
+    private lateinit var binding: AddDebtDetailsBinding
     private lateinit var dateString: String
     private var aDateInteger: Int = 0
-    private var btnState: Boolean = false
-
-    var nameField: EditText? = null
-    var amountField: EditText? = null
-
-    var isAllFieldsChecked = false
+    private var btnState = false
+    private var isAllFieldsChecked = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,9 +39,6 @@ class AddDebtDetails : AppCompatActivity(), DebtContract.View {
         aDateInteger = intent.getIntExtra(PassedData.DATE_INTEGER, 0)
         dateString = intent.getStringExtra(PassedData.DATE_INFO).toString()
         btnState = intent.getBooleanExtra(PassedData.DEBTOR_INFO, false)
-
-        nameField = binding.addCreditorName
-        amountField = binding.debtSum
 
         setInfo()
 
@@ -119,7 +112,8 @@ class AddDebtDetails : AppCompatActivity(), DebtContract.View {
                 when (intent.getStringExtra(PassedData.ADD_SAVE)) {
                     "add" -> {
                         presenter.addDebt(debts)
-                        Toast.makeText(this, getString(R.string.update_toast), Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, getString(R.string.update_toast), Toast.LENGTH_SHORT)
+                            .show()
                     }
                     "save" -> {
                         debts.id = intent.getIntExtra(PassedData.ID_INFO, 0)
@@ -179,12 +173,12 @@ class AddDebtDetails : AppCompatActivity(), DebtContract.View {
         }
     }
 
-    fun checkAllFields(): Boolean {
-        if (nameField!!.length() == 0) {
-            nameField!!.error = getString(R.string.name_mt)
+    private fun checkAllFields(): Boolean {
+        if (binding.addCreditorName.length() == 0) {
+            binding.addCreditorName.error = getString(R.string.name_mt)
             return false
-        } else if (amountField!!.length() == 0) {
-            amountField!!.error = getString(R.string.amount_mt)
+        } else if (binding.debtSum.length() == 0) {
+            binding.debtSum.error = getString(R.string.amount_mt)
             return false
         }
         return true
