@@ -17,11 +17,14 @@ import com.example.labproject2.getTodayDate
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
 import java.util.*
+import kotlin.properties.Delegates
 
 class DebtsAdapter(
     private var debtList: List<Debts>,
     private val fragmentId: String
 ) : RecyclerView.Adapter<DebtsAdapter.DebtListViewHolder>() {
+
+    private var ifDebtPassed by Delegates.notNull<Int>()
 
     class DebtListViewHolder(binding: RecyclerItemBinding) : RecyclerView.ViewHolder(binding.root) {
         val untilDate: TextView = binding.untilDate
@@ -39,9 +42,17 @@ class DebtsAdapter(
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onBindViewHolder(holder: DebtListViewHolder, position: Int) {
+        val isMainFragment: Boolean = fragmentId == "MainFragment"
+
+        // if due date is not set, it will show "Due date not set" text
         if (debtList[position].date == "Due date not set") {
             holder.untilDate.text = holder.itemView.context.getString(R.string.date_unpicked)
+            // assign ifDebtPassed to -1 so it will not be considered as due today
+            ifDebtPassed = -1
+            // if due date is set, it will show the date
         } else {
+            // ifDebtPassed to check if due date is passed, today, or passed
+            ifDebtPassed = getDatePassed(debtList[position].date)
             holder.untilDate.text =
                 holder.itemView.context.getString(R.string.until_date, debtList[position].date)
         }
@@ -49,19 +60,14 @@ class DebtsAdapter(
         holder.debtCurrency.text = debtList[position].currency
         holder.peopleName.text = debtList[position].name
         //if a debt is due today
-        if (debtList[position].dateInteger == TodayDateInt) {
-            if (fragmentId == "MyDebtsFragment" || fragmentId == "SomeoneOwesMeFragment") {
-                updateBackgroundDebtToday(holder)
-            }
+        if (ifDebtPassed == 0) {
+            updateBackgroundDebtToday(holder, isMainFragment)
             holder.untilDate.text = holder.itemView.context.getString(R.string.due_today, "Today!")
-            //if a debt date is picked and the due is past
-        } else if (debtList[position].dateInteger < TodayDateInt) {
-            if (fragmentId == "MyDebtsFragment" || fragmentId == "SomeoneOwesMeFragment") {
-                updateBackgroundDebtPassed(holder)
-            }
-            val datePassed = getDatePassed(debtList[position].date)
+            //if a debt date due is past
+        } else if (ifDebtPassed > 0) {
+            updateBackgroundDebtPassed(holder, isMainFragment)
             holder.untilDate.text =
-                holder.itemView.context.getString(R.string.past_due, datePassed.toString())
+                holder.itemView.context.getString(R.string.past_due, ifDebtPassed.toString())
         }
 
         holder.itemView.setOnClickListener {
@@ -69,16 +75,20 @@ class DebtsAdapter(
         }
     }
 
-    private fun updateBackgroundDebtToday(holder: DebtListViewHolder) {
-        // debts that are due today is colored in yellow
-        holder.debtCard.background = holder.itemView.context.getDrawable(R.color.button)
-        updateHolderFontColor(holder)
+    private fun updateBackgroundDebtToday(holder: DebtListViewHolder, isMainFragment: Boolean) {
+        if (!isMainFragment) {
+            // debts that are due today is colored in yellow
+            holder.debtCard.background = holder.itemView.context.getDrawable(R.color.button)
+            updateHolderFontColor(holder)
+        }
     }
 
-    private fun updateBackgroundDebtPassed(holder: DebtListViewHolder) {
-        // debts that are due today is colored in red
-        holder.debtCard.background = holder.itemView.context.getDrawable(R.color.tertiary)
-        updateHolderFontColor(holder)
+    private fun updateBackgroundDebtPassed(holder: DebtListViewHolder, isMainFragment: Boolean) {
+        if (!isMainFragment) {
+            // debts that are due today is colored in red
+            holder.debtCard.background = holder.itemView.context.getDrawable(R.color.tertiary)
+            updateHolderFontColor(holder)
+        }
     }
 
     private fun updateHolderFontColor(holder: DebtListViewHolder) {
@@ -125,17 +135,5 @@ class DebtsAdapter(
 
         val daysBetween = ChronoUnit.DAYS.between(startDate, endDate)
         return daysBetween.toInt()
-    }
-
-    companion object {
-        val TodayDateInt: Int = getTodayDateInteger()
-        private fun getTodayDateInteger(): Int {
-            val dateString = getTodayDate()
-            val dateSplit = dateString.split("-")
-            val dayInt = Integer.parseInt(dateSplit[0])
-            val monthInt = Integer.parseInt(dateSplit[1])
-            val yearInt = Integer.parseInt(dateSplit[2])
-            return ((yearInt * 10000) + (monthInt * 100) + dayInt)
-        }
     }
 }
