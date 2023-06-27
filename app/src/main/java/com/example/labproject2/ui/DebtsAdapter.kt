@@ -2,6 +2,7 @@ package com.example.labproject2.ui
 
 import android.content.Intent
 import android.os.Build
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
@@ -39,8 +40,7 @@ class DebtsAdapter(
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onBindViewHolder(holder: DebtListViewHolder, position: Int) {
         if (debtList[position].date == "Due date not set") {
-            holder.untilDate.text =
-                holder.itemView.context.getString(R.string.date_unpicked)
+            holder.untilDate.text = holder.itemView.context.getString(R.string.date_unpicked)
         } else {
             holder.untilDate.text =
                 holder.itemView.context.getString(R.string.until_date, debtList[position].date)
@@ -51,21 +51,13 @@ class DebtsAdapter(
         //if a debt is due today
         if (debtList[position].dateInteger == TodayDateInt) {
             if (fragmentId == "MyDebtsFragment" || fragmentId == "SomeoneOwesMeFragment") {
-                holder.debtCard.background = holder.itemView.context.getDrawable(R.color.button)
-                holder.untilDate.setTextColor(holder.itemView.context.getColor(R.color.white))
-                holder.peopleName.setTextColor(holder.itemView.context.getColor(R.color.white))
-                holder.debtAmount.setTextColor(holder.itemView.context.getColor(R.color.white))
-                holder.debtCurrency.setTextColor(holder.itemView.context.getColor(R.color.white))
+                updateBackgroundDebtToday(holder)
             }
             holder.untilDate.text = holder.itemView.context.getString(R.string.due_today, "Today!")
             //if a debt date is picked and the due is past
         } else if (debtList[position].dateInteger < TodayDateInt) {
             if (fragmentId == "MyDebtsFragment" || fragmentId == "SomeoneOwesMeFragment") {
-                holder.debtCard.background = holder.itemView.context.getDrawable(R.color.tertiary)
-                holder.untilDate.setTextColor(holder.itemView.context.getColor(R.color.white))
-                holder.peopleName.setTextColor(holder.itemView.context.getColor(R.color.white))
-                holder.debtAmount.setTextColor(holder.itemView.context.getColor(R.color.white))
-                holder.debtCurrency.setTextColor(holder.itemView.context.getColor(R.color.white))
+                updateBackgroundDebtPassed(holder)
             }
             val datePassed = getDatePassed(debtList[position].date)
             holder.untilDate.text =
@@ -73,18 +65,42 @@ class DebtsAdapter(
         }
 
         holder.itemView.setOnClickListener {
-            val nextPage = Intent(holder.itemView.context, AddDebtDetails::class.java).apply {
-                putExtra(PassedData.ADD_SAVE, "save")
-                putExtra(PassedData.CRED_INFO, debtList[position].name)
-                putExtra(PassedData.DATE_INFO, debtList[position].date)
-                putExtra(PassedData.AMOUNT_INFO, debtList[position].amount)
-                putExtra(PassedData.CURR_INFO, debtList[position].currency)
-                putExtra(PassedData.DEBTOR_INFO, debtList[position].isDebtor)
-                putExtra(PassedData.DATE_INTEGER, debtList[position].dateInteger)
-                putExtra(PassedData.ID_INFO, debtList[position].id)
-            }
-            holder.itemView.context.startActivity(nextPage)
+            itemClickDetails(holder, position)
         }
+    }
+
+    private fun updateBackgroundDebtToday(holder: DebtListViewHolder) {
+        // debts that are due today is colored in yellow
+        holder.debtCard.background = holder.itemView.context.getDrawable(R.color.button)
+        updateHolderFontColor(holder)
+    }
+
+    private fun updateBackgroundDebtPassed(holder: DebtListViewHolder) {
+        // debts that are due today is colored in red
+        holder.debtCard.background = holder.itemView.context.getDrawable(R.color.tertiary)
+        updateHolderFontColor(holder)
+    }
+
+    private fun updateHolderFontColor(holder: DebtListViewHolder) {
+        // fonts are changed into whit color for better UI readability
+        holder.untilDate.setTextColor(holder.itemView.context.getColor(R.color.white))
+        holder.peopleName.setTextColor(holder.itemView.context.getColor(R.color.white))
+        holder.debtAmount.setTextColor(holder.itemView.context.getColor(R.color.white))
+        holder.debtCurrency.setTextColor(holder.itemView.context.getColor(R.color.white))
+    }
+
+    private fun itemClickDetails(holder: DebtListViewHolder, position: Int) {
+        val nextPage = Intent(holder.itemView.context, AddDebtDetails::class.java).apply {
+            putExtra(PassedData.ADD_SAVE, "save")
+            putExtra(PassedData.CRED_INFO, debtList[position].name)
+            putExtra(PassedData.DATE_INFO, debtList[position].date)
+            putExtra(PassedData.AMOUNT_INFO, debtList[position].amount)
+            putExtra(PassedData.CURR_INFO, debtList[position].currency)
+            putExtra(PassedData.DEBTOR_INFO, debtList[position].isDebtor)
+            putExtra(PassedData.DATE_INTEGER, debtList[position].dateInteger)
+            putExtra(PassedData.ID_INFO, debtList[position].id)
+        }
+        holder.itemView.context.startActivity(nextPage)
     }
 
     override fun getItemCount(): Int {

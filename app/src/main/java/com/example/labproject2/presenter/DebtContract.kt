@@ -14,9 +14,7 @@ interface DebtContract {
         fun getDebtsOwedToUs()
         fun getDebtsWeOwe()
         fun addDebt(debts: Debts)
-
         fun updateDebt(debts: Debts)
-
         fun deleteDebt(debts: Debts)
     }
 
@@ -26,9 +24,7 @@ interface DebtContract {
         fun getDebtsOwedToUs(callback: (List<Debts>) -> Unit)
         fun getDebtsWeOwe(callback: (List<Debts>) -> Unit)
         fun addDebt(debts: Debts)
-
         fun updateDebt(debts: Debts)
-
         fun deleteDebt(debts: Debts)
     }
 }
