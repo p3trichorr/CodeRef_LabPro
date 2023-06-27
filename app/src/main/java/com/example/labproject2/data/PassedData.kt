@@ -7,6 +7,5 @@ object PassedData {
     const val AMOUNT_INFO = "amount_info"
     const val CURR_INFO = "curr_info"
     const val DEBTOR_INFO = "true_false"
-    const val DATE_INTEGER = "date_integer"
     const val ID_INFO = "id"
 }

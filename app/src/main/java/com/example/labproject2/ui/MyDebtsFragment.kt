@@ -1,14 +1,18 @@
 package com.example.labproject2.ui
 
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.labproject2.data.DebtDatabase
 import com.example.labproject2.data.Debts
 import com.example.labproject2.databinding.FragmentMyDebtsBinding
+import com.example.labproject2.getDatePassed
+import com.example.labproject2.getDatePriority
 import com.example.labproject2.presenter.DebtModel
 import com.example.labproject2.presenter.DebtPresenter
 
@@ -68,8 +72,10 @@ class MyDebtsFragment : Fragment(), DebtContract.View {
         TODO("Not yet implemented")
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun showDebtsWeOwe(debts: List<Debts>) {
-        val adapter = DebtsAdapter(debts, "MyDebtsFragment")
+        val sortWithDate = debts.sortedBy { getDatePriority(it.date) }
+        val adapter = DebtsAdapter(sortWithDate, "MyDebtsFragment")
         binding.myDebtsRecycle.adapter = adapter
     }
 }

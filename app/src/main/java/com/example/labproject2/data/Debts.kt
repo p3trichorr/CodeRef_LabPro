@@ -12,5 +12,5 @@ data class Debts(
     val date: String,
     val currency: String,
     val isDebtor: Boolean,
-    var dateInteger: Int
+    val dateInteger: Int
 )

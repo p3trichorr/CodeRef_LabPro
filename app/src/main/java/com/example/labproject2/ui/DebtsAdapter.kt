@@ -2,7 +2,6 @@ package com.example.labproject2.ui
 
 import android.content.Intent
 import android.os.Build
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
@@ -13,9 +12,7 @@ import com.example.labproject2.R
 import com.example.labproject2.data.Debts
 import com.example.labproject2.data.PassedData
 import com.example.labproject2.databinding.RecyclerItemBinding
-import com.example.labproject2.getTodayDate
-import java.time.LocalDate
-import java.time.temporal.ChronoUnit
+import com.example.labproject2.getDatePassed
 import java.util.*
 import kotlin.properties.Delegates
 
@@ -45,7 +42,7 @@ class DebtsAdapter(
         val isMainFragment: Boolean = fragmentId == "MainFragment"
 
         // if due date is not set, it will show "Due date not set" text
-        if (debtList[position].date == "Due date not set") {
+        if (debtList[position].date == "null") {
             holder.untilDate.text = holder.itemView.context.getString(R.string.date_unpicked)
             // assign ifDebtPassed to -1 so it will not be considered as due today
             ifDebtPassed = -1
@@ -107,7 +104,6 @@ class DebtsAdapter(
             putExtra(PassedData.AMOUNT_INFO, debtList[position].amount)
             putExtra(PassedData.CURR_INFO, debtList[position].currency)
             putExtra(PassedData.DEBTOR_INFO, debtList[position].isDebtor)
-            putExtra(PassedData.DATE_INTEGER, debtList[position].dateInteger)
             putExtra(PassedData.ID_INFO, debtList[position].id)
         }
         holder.itemView.context.startActivity(nextPage)
@@ -115,25 +111,5 @@ class DebtsAdapter(
 
     override fun getItemCount(): Int {
         return debtList.size
-    }
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    fun getDatePassed(debtDate: String): Int {
-        val dateString = getTodayDate()
-        val dateSplit = dateString.split("-")
-        val debtDateSplit = debtDate.split("-")
-        val startDate = LocalDate.of(
-            Integer.parseInt(debtDateSplit[2]),
-            Integer.parseInt(debtDateSplit[1]),
-            Integer.parseInt(debtDateSplit[0])
-        )
-        val endDate = LocalDate.of(
-            Integer.parseInt(dateSplit[2]),
-            Integer.parseInt(dateSplit[1]),
-            Integer.parseInt(dateSplit[0])
-        )
-
-        val daysBetween = ChronoUnit.DAYS.between(startDate, endDate)
-        return daysBetween.toInt()
     }
 }

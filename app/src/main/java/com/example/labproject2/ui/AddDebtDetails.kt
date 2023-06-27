@@ -23,7 +23,6 @@ class AddDebtDetails : AppCompatActivity(), DebtContract.View {
 
     private lateinit var binding: AddDebtDetailsBinding
     private lateinit var dateString: String
-    private var aDateInteger: Int = 0
     private var btnState = false
     private var isAllFieldsChecked = false
 
@@ -36,7 +35,6 @@ class AddDebtDetails : AppCompatActivity(), DebtContract.View {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
 
-        aDateInteger = intent.getIntExtra(PassedData.DATE_INTEGER, 0)
         dateString = intent.getStringExtra(PassedData.DATE_INFO).toString()
         btnState = intent.getBooleanExtra(PassedData.DEBTOR_INFO, false)
 
@@ -54,11 +52,8 @@ class AddDebtDetails : AppCompatActivity(), DebtContract.View {
         val year = c.get(Calendar.YEAR)
         val month = c.get(Calendar.MONTH)
         val day = c.get(Calendar.DAY_OF_MONTH)
-        // to make unpicked date to the bottom of the list
-        aDateInteger = ((year * 100000) + ((month + 1) * 100) + day)
 
         binding.dateButton.setOnClickListener {
-
             val datePickerDialog = DatePickerDialog(
                 this,
                 { _, year, monthOfYear, dayOfMonth ->
@@ -68,8 +63,6 @@ class AddDebtDetails : AppCompatActivity(), DebtContract.View {
                     } else {
                         (dayOfMonth.toString() + "-" + (monthOfYear + 1) + "-" + year)
                     }
-                    //To set list in a ascending manner and to check today date
-                    aDateInteger = ((year * 10000) + ((monthOfYear + 1) * 100) + dayOfMonth)
                     binding.returnUntil.text = getString(R.string.return_until, dateString)
                 },
                 year,
@@ -97,15 +90,14 @@ class AddDebtDetails : AppCompatActivity(), DebtContract.View {
         }
 
         binding.saveBtn.setOnClickListener {
-            val debtDate = fillDate(dateString)
             val debts = Debts(
                 id = 0,
                 binding.addCreditorName.text.toString(),
                 binding.debtSum.text.toString(),
-                debtDate,
+                dateString,
                 binding.currencySpinner.selectedItem.toString(),
                 btnState,
-                aDateInteger,
+                0
             )
             isAllFieldsChecked = checkAllFields()
             if (isAllFieldsChecked) {
@@ -138,7 +130,7 @@ class AddDebtDetails : AppCompatActivity(), DebtContract.View {
                         dateString,
                         binding.currencySpinner.selectedItem.toString(),
                         btnState,
-                        aDateInteger,
+                        0
                     )
                     presenter.deleteDebt(debts)
                     Toast.makeText(this, getString(R.string.delete_toast), Toast.LENGTH_SHORT).show()
@@ -182,13 +174,6 @@ class AddDebtDetails : AppCompatActivity(), DebtContract.View {
             return false
         }
         return true
-    }
-
-    private fun fillDate(debtDate: String): String {
-        if (debtDate == "null") {
-            return getString(R.string.date_unpicked)
-        }
-        return debtDate
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
